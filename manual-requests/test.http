@@ -1,0 +1,69 @@
+### 0. Генерация токена
+GET http://admin:admin@192.168.0.15:8111/authenticationTest.html?csrf
+Accept: application/json
+
+### 1. Создание проекта
+POST http://admin:admin@192.168.0.15:8111/app/rest/projects
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: ca5c68dd-f181-413a-8ee4-5cb573fee58d
+
+{
+  "parentProject": {
+    "locator": "_Root"
+  },
+  "name": "name",
+  "id": "id",
+  "copyAllAssociatedSettings": true
+}
+
+### 2. Create build configuration
+POST http://admin:admin@192.168.0.15:8111/app/rest/buildTypes
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: ca5c68dd-f181-413a-8ee4-5cb573fee58d
+
+{
+  "id": "id",
+  "name": "Print hello world",
+  "project": {
+    "id": "id"
+  },
+  "steps": {
+    "step": [
+      {
+        "name": "Print hello world",
+        "type": "simpleRunner",
+        "properties": {
+          "property": [
+            {
+              "name": "script.content",
+              "value": "echo 'Hello World!'"
+            },
+            {
+              "name": "teamcity.step.mode",
+              "value": "default"
+            },
+            {
+              "name": "use.custom.script",
+              "value": "true"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+
+### 2. Run build
+POST http://admin:admin@192.168.0.15:8111/app/rest/buildQueue
+Content-Type: application/json
+Accept: application/json
+X-TC-CSRF-Token: ca5c68dd-f181-413a-8ee4-5cb573fee58d
+
+{
+  "buildType": {
+    "id": "id"
+  }
+}
